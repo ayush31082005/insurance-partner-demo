@@ -1,4 +1,4 @@
-import { MoveRight, Share2 } from 'lucide-react';
+import { ChevronRight, MoveRight, Share2 } from 'lucide-react';
 import { useMemo } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import {

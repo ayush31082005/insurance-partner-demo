@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ChevronDown, Menu, Phone } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const navItems = [
   {
@@ -39,6 +39,21 @@ export default function Navbar() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const supportRef = useRef(null);
   const navRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  function handleMobileNavigate(href) {
+    setIsMobileMenuOpen(false);
+    setOpenDropdown(null);
+    setIsSupportOpen(false);
+
+    if (location.pathname === href) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    navigate(href);
+  }
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -223,32 +238,29 @@ export default function Navbar() {
                     {openDropdown === item.label ? (
                       <div className="mt-1 overflow-hidden rounded-[8px] border border-[#ececec] bg-white">
                         {item.items.map((dropdownItem, index) => (
-                          <Link
+                          <button
                             key={dropdownItem.label}
-                            to={dropdownItem.href}
-                            onClick={() => {
-                              setIsMobileMenuOpen(false);
-                              setOpenDropdown(null);
-                            }}
-                            className={`block px-4 py-3 text-[15px] text-[#3a3a3a] ${
+                            type="button"
+                            onClick={() => handleMobileNavigate(dropdownItem.href)}
+                            className={`block w-full px-4 py-3 text-left text-[15px] text-[#3a3a3a] ${
                               index === 0 ? 'border-t-2 border-[#4b80fd]' : ''
                             } ${index !== item.items.length - 1 ? 'border-b border-[#ececec]' : ''}`}
                           >
                             {dropdownItem.label}
-                          </Link>
+                          </button>
                         ))}
                       </div>
                     ) : null}
                   </div>
                 ) : item.href.startsWith('/') ? (
-                  <Link
+                  <button
                     key={item.label}
-                    to={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="inline-flex items-center justify-between rounded-[8px] px-2 py-3 text-[15px] font-medium text-[#111111] transition hover:bg-[#f5f9ff]"
+                    type="button"
+                    onClick={() => handleMobileNavigate(item.href)}
+                    className="inline-flex w-full items-center justify-between rounded-[8px] px-2 py-3 text-[15px] font-medium text-[#111111] transition hover:bg-[#f5f9ff]"
                   >
                     <span>{item.label}</span>
-                  </Link>
+                  </button>
                 ) : (
                   <a
                     key={item.label}
