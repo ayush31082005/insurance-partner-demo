@@ -56,7 +56,7 @@ function LeadForm({ title, nameLabel }) {
 
         <div>
           <span className="mb-2 block text-[12px] font-medium text-[#222]">Any prior experience in insurance? *</span>
-          <div className="flex items-center gap-6 text-[14px] text-[#1d2c46]">
+          <div className="flex flex-col gap-3 text-[14px] text-[#1d2c46] sm:flex-row sm:items-center sm:gap-6">
             <label className="inline-flex items-center gap-2">
               <input type="radio" name="experience" className="h-4 w-4" />
               Yes
@@ -96,10 +96,10 @@ function LeadForm({ title, nameLabel }) {
 function ArticleCard({ article }) {
   return (
     <article className="overflow-hidden rounded-[12px] border border-[#d8e5f6] bg-white shadow-[0_4px_14px_rgba(23,52,104,0.06)]">
-      <img src={article.image} alt={article.title} className="h-[194px] w-full object-cover" />
+      <img src={article.image} alt={article.title} className="h-48 w-full object-cover sm:h-[194px]" />
       <div className="p-4">
-        <h3 className="min-h-[72px] text-[16px] font-semibold leading-[1.5] text-[#0f2342]">{article.title}</h3>
-        <p className="mt-3 min-h-[56px] text-[14px] leading-[1.6] text-[#596b88]">{article.excerpt}</p>
+        <h3 className="text-[16px] font-semibold leading-[1.5] text-[#0f2342] sm:min-h-[72px]">{article.title}</h3>
+        <p className="mt-3 text-[14px] leading-[1.6] text-[#596b88] sm:min-h-[56px]">{article.excerpt}</p>
         <button
           type="button"
           className="mt-4 inline-flex h-[38px] w-full items-center justify-center rounded-[9px] border border-[#7fb0ff] bg-[#e8f1ff] text-[15px] font-semibold text-[#1b56bf]"
@@ -121,7 +121,7 @@ function TestimonialCard({ item }) {
         <h3 className="text-[15px] font-semibold text-[#1f2e48]">{item.title}</h3>
       </div>
 
-      <p className="min-h-[130px] text-[15px] leading-[1.7] text-[#4c5e7b]">{item.quote}</p>
+      <p className="text-[15px] leading-[1.7] text-[#4c5e7b] sm:min-h-[130px]">{item.quote}</p>
 
       <p className="mt-5 text-[15px] font-semibold text-[#1f2e48]">{item.author}</p>
       <p className="text-[14px] text-[#8d99ad]">{item.authorTitle}</p>
@@ -133,14 +133,14 @@ function TestimonialCard({ item }) {
 
 function AppPromo() {
   return (
-    <section className="rounded-[20px] bg-[#f7fbff] px-6 py-8 md:px-10">
+    <section className="rounded-[20px] bg-[#f7fbff] px-4 py-8 sm:px-6 md:px-10">
       <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_300px]">
-        <div>
+        <div className="min-w-0">
           <span className="inline-flex rounded-full bg-[#dbe9ff] px-3 py-1 text-[12px] font-semibold text-[#3b66b6]">
             {appPromo.tag}
           </span>
-          <h2 className="mt-4 text-[28px] font-semibold leading-[1.2] text-[#10284d]">{appPromo.title}</h2>
-          <p className="mt-2 text-[16px] text-[#60708d]">{appPromo.subtitle}</p>
+          <h2 className="mt-4 text-[24px] font-semibold leading-[1.2] text-[#10284d] sm:text-[28px]">{appPromo.title}</h2>
+          <p className="mt-2 text-[15px] text-[#60708d] sm:text-[16px]">{appPromo.subtitle}</p>
 
           <div className="mt-5 flex flex-wrap gap-4">
             <img src={appPromo.appStore} alt="App Store" className="h-[44px] w-auto rounded-[8px]" />
@@ -159,7 +159,7 @@ function AppPromo() {
           </div>
         </div>
 
-        <div className="justify-self-end">
+        <div className="justify-self-center md:justify-self-end">
           <img src={appPromo.phoneImage} alt="PBPartners app" className="max-h-[300px] w-auto object-contain" />
         </div>
       </div>
@@ -179,16 +179,16 @@ export default function AdvisorPage({ pageKey = null }) {
 
   return (
     <>
-      <main className="mx-auto max-w-[1100px] px-4 pb-16 pt-[112px]">
+      <main className="mx-auto max-w-[1100px] overflow-x-hidden px-3 pb-16 pt-[104px] sm:px-4 sm:pt-[112px]">
         <section className="relative overflow-hidden rounded-b-[12px]">
           <div className="absolute inset-x-0 top-0 h-[28px] bg-[#edf5ff]" />
 
           <div className="relative z-10 pt-6">
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_332px]">
-              <div>
-                <h1 className="text-[25px] font-semibold leading-[1.25] text-[#152e57]">{page.hero.title}</h1>
+              <div className="min-w-0">
+                <h1 className="text-[22px] font-semibold leading-[1.25] text-[#152e57] sm:text-[25px]">{page.hero.title}</h1>
                 <p className="mt-1 text-[15px] font-semibold text-[#111111]">{page.hero.subtitle}</p>
-                <p className="mt-4 max-w-[690px] text-[16px] leading-[1.7] text-[#243e66]">{page.hero.description}</p>
+                <p className="mt-4 max-w-[690px] text-[15px] leading-[1.7] text-[#243e66] sm:text-[16px]">{page.hero.description}</p>
 
                 <img
                   src={page.hero.image}
@@ -206,7 +206,7 @@ export default function AdvisorPage({ pageKey = null }) {
                 </button>
               </div>
 
-              <div className="relative">
+              <div className="relative min-w-0">
                 <div
                   className="absolute -bottom-8 -right-14 hidden h-[216px] w-[420px] lg:block"
                   style={{
@@ -224,10 +224,10 @@ export default function AdvisorPage({ pageKey = null }) {
 
         <section id="sections" className="pt-8">
           <div className="text-center">
-            <h2 className="text-[24px] font-semibold leading-[1.25] text-[#152e57]">{page.featuresTitle}</h2>
+            <h2 className="text-[22px] font-semibold leading-[1.25] text-[#152e57] sm:text-[24px]">{page.featuresTitle}</h2>
             {underlineClass()}
           </div>
-          <p className="mx-auto mt-6 max-w-[1020px] text-[16px] leading-[1.75] text-[#243e66]">
+          <p className="mx-auto mt-6 max-w-[1020px] text-[15px] leading-[1.75] text-[#243e66] sm:text-[16px]">
             {page.featuresIntro}{' '}
             <a href="#lead-form" className="font-semibold text-[#1663f6]">Read More</a>
           </p>
@@ -247,21 +247,21 @@ export default function AdvisorPage({ pageKey = null }) {
 
         <section className="pt-16">
           <div className="text-center">
-            <h2 className="text-[24px] font-semibold leading-[1.25] text-[#152e57]">{page.whoTitle}</h2>
+            <h2 className="text-[22px] font-semibold leading-[1.25] text-[#152e57] sm:text-[24px]">{page.whoTitle}</h2>
             {underlineClass()}
           </div>
-          <p className="mx-auto mt-6 max-w-[1020px] text-[16px] leading-[1.75] text-[#243e66]">
+          <p className="mx-auto mt-6 max-w-[1020px] text-[15px] leading-[1.75] text-[#243e66] sm:text-[16px]">
             {page.whoIntro}{' '}
             <a href="#lead-form" className="font-semibold text-[#1663f6]">Read More</a>
           </p>
         </section>
 
-        <section className="mt-12 bg-[#f7fbff] px-6 py-14 md:px-10">
+        <section className="mt-12 bg-[#f7fbff] px-4 py-12 sm:px-6 md:px-10 md:py-14">
           <div className="text-center">
-            <h2 className="text-[24px] font-semibold leading-[1.25] text-[#152e57]">{page.stepsTitle}</h2>
+            <h2 className="text-[22px] font-semibold leading-[1.25] text-[#152e57] sm:text-[24px]">{page.stepsTitle}</h2>
             {underlineClass()}
           </div>
-          <p className="mx-auto mt-6 max-w-[1020px] text-[16px] leading-[1.75] text-[#243e66]">{page.stepsIntro}</p>
+          <p className="mx-auto mt-6 max-w-[1020px] text-[15px] leading-[1.75] text-[#243e66] sm:text-[16px]">{page.stepsIntro}</p>
 
           <div className="mt-10 grid gap-8 md:grid-cols-4">
             {page.steps.map((step, index) => {
@@ -284,7 +284,7 @@ export default function AdvisorPage({ pageKey = null }) {
 
         <section className="pt-16">
           <div className="text-center">
-            <h2 className="text-[24px] font-semibold leading-[1.25] text-[#152e57]">{page.articlesTitle}</h2>
+            <h2 className="text-[22px] font-semibold leading-[1.25] text-[#152e57] sm:text-[24px]">{page.articlesTitle}</h2>
             {underlineClass()}
           </div>
 
@@ -297,7 +297,7 @@ export default function AdvisorPage({ pageKey = null }) {
 
         <section className="pt-16">
           <div className="text-center">
-            <h2 className="text-[24px] font-semibold leading-[1.25] text-[#152e57]">{page.testimonialTitle}</h2>
+            <h2 className="text-[22px] font-semibold leading-[1.25] text-[#152e57] sm:text-[24px]">{page.testimonialTitle}</h2>
             {underlineClass()}
           </div>
 
@@ -325,22 +325,22 @@ export default function AdvisorPage({ pageKey = null }) {
 
         <section className="pt-16">
           <div className="text-center">
-            <h2 className="text-[24px] font-semibold leading-[1.25] text-[#152e57]">{page.faqTitle}</h2>
+            <h2 className="text-[22px] font-semibold leading-[1.25] text-[#152e57] sm:text-[24px]">{page.faqTitle}</h2>
             {underlineClass()}
           </div>
 
           <div className="mt-8 grid items-start gap-10 lg:grid-cols-[340px_minmax(0,1fr)]">
-            <div className="text-center">
+            <div className="min-w-0 text-center">
               <img src={page.faqImage} alt="FAQs" className="mx-auto h-auto max-w-full object-contain" />
               <a
                 href="#lead-form"
-                className="mt-5 inline-flex h-[44px] min-w-[210px] items-center justify-center rounded-[10px] bg-[#1663f6] px-8 text-[20px] font-semibold text-white no-underline"
+                className="mt-5 inline-flex min-h-[44px] w-full max-w-[280px] items-center justify-center rounded-[10px] bg-[#1663f6] px-6 py-3 text-[18px] font-semibold text-white no-underline sm:w-auto sm:min-w-[210px] sm:px-8 sm:text-[20px]"
               >
                 Become POSP Agent
               </a>
             </div>
 
-            <div className="space-y-1">
+            <div className="min-w-0 space-y-1">
               {page.faqs.map((item, index) => (
                 <div key={item.question} className="border-b border-[#dfe6f2]">
                   <button

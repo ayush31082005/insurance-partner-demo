@@ -1,6 +1,7 @@
 import { ChevronRight, MoveRight, Share2 } from 'lucide-react';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
+import { articleCategories } from '../data/articlesData.js';
 import {
   commonFeaturedArticles,
   commonLatestArticles,
@@ -8,6 +9,14 @@ import {
 } from '../data/articleCategoryPages.js';
 
 const shareLinks = ['f', 'x', 'in', 'wa', 'lnk'];
+const genericCategoryImage = articleCategories.find((category) => category.slug === 'generic')?.image ?? '';
+const fallbackImageByCategory = Object.fromEntries(
+  articleCategories.map((category) => [category.name, category.image]),
+);
+
+function normalizeImageSrc(url) {
+  return url ? encodeURI(url) : genericCategoryImage;
+}
 
 function ArticleMeta({ author, category, hits }) {
   return (
@@ -25,13 +34,37 @@ function ArticleMeta({ author, category, hits }) {
 }
 
 function ArticleCard({ article }) {
+  const categoryFallback = fallbackImageByCategory[article.category] ?? genericCategoryImage;
+  const [imageSrc, setImageSrc] = useState(normalizeImageSrc(article.image));
+
+  useEffect(() => {
+    setImageSrc(normalizeImageSrc(article.image));
+  }, [article.image]);
+
+  function handleImageError() {
+    if (imageSrc !== normalizeImageSrc(categoryFallback)) {
+      setImageSrc(normalizeImageSrc(categoryFallback));
+      return;
+    }
+
+    if (imageSrc !== normalizeImageSrc(genericCategoryImage)) {
+      setImageSrc(normalizeImageSrc(genericCategoryImage));
+    }
+  }
+
   return (
     <article className="overflow-hidden rounded-[12px] border border-[#dce4f0] bg-white shadow-[0_2px_8px_rgba(15,23,42,0.05)]">
-      <img src={article.image} alt={article.title} className="h-[220px] w-full object-cover" />
+      <img
+        src={imageSrc}
+        alt={article.title}
+        loading="lazy"
+        onError={handleImageError}
+        className="h-48 w-full bg-[#eef5ff] object-cover sm:h-[220px]"
+      />
       <div className="p-4">
-        <h3 className="min-h-[68px] text-[17px] font-semibold leading-[1.4] text-black">{article.title}</h3>
+        <h3 className="text-[16px] font-semibold leading-[1.4] text-black sm:min-h-[68px] sm:text-[17px]">{article.title}</h3>
         <ArticleMeta author={article.author} category={article.category} hits={article.hits} />
-        <p className="mt-5 min-h-[74px] text-[14px] leading-[1.8] text-[#334d74]">{article.excerpt}</p>
+        <p className="mt-4 text-[14px] leading-[1.75] text-[#334d74] sm:mt-5 sm:min-h-[74px] sm:leading-[1.8]">{article.excerpt}</p>
         <button
           type="button"
           className="mt-5 inline-flex h-[40px] w-full items-center justify-center rounded-[10px] bg-[#dceafe] text-[16px] font-semibold text-[#1d4faa]"
@@ -103,7 +136,7 @@ function LeadForm() {
 
         <div>
           <span className="mb-2 block text-[13px] font-medium text-[#222]">Any prior experience in insurance? *</span>
-          <div className="flex items-center gap-6 text-[15px] text-[#1d2c46]">
+          <div className="flex flex-col gap-3 text-[15px] text-[#1d2c46] sm:flex-row sm:items-center sm:gap-6">
             <label className="inline-flex items-center gap-2">
               <input type="radio" name="experience" className="h-4 w-4" />
               Yes
@@ -146,7 +179,7 @@ function SharePanel() {
       <div className="bg-[#eef5ff] px-4 py-4">
         <h3 className="text-[18px] font-semibold text-black">Share this with Your Friends</h3>
       </div>
-      <div className="flex items-center gap-4 px-4 py-4">
+      <div className="flex flex-wrap items-center gap-3 px-4 py-4 sm:gap-4">
         <button
           type="button"
           className="inline-flex h-[38px] w-[38px] items-center justify-center rounded-full bg-[#3a465b] text-white"
@@ -177,12 +210,12 @@ export default function InsuranceCategoryPage() {
 
   return (
     <>
-      <main className="mx-auto max-w-[1100px] px-4 pb-16 pt-[112px] md:pt-[104px]">
+      <main className="mx-auto max-w-[1100px] px-3 pb-16 pt-[104px] sm:px-4 sm:pt-[112px] md:pt-[104px]">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_328px]">
-          <div>
-            <section className="rounded-[14px] bg-[#f7f9fc] p-5">
-              <h1 className="text-[28px] font-semibold text-black">{page.title}</h1>
-              <p className="mt-3 text-[16px] leading-[1.65] text-[#213a61]">{page.description}</p>
+          <div className="min-w-0">
+            <section className="rounded-[14px] bg-[#f7f9fc] p-4 sm:p-5">
+              <h1 className="text-[24px] font-semibold text-black sm:text-[28px]">{page.title}</h1>
+              <p className="mt-3 text-[15px] leading-[1.7] text-[#213a61] sm:text-[16px] sm:leading-[1.65]">{page.description}</p>
             </section>
 
             <section className="mt-4 grid gap-4 md:grid-cols-2">
@@ -193,38 +226,40 @@ export default function InsuranceCategoryPage() {
 
             <div className="mt-4 flex flex-col gap-4 rounded-[12px] border border-[#e4eaf4] bg-white px-4 py-4 md:flex-row md:items-center md:justify-between">
               <p className="text-[14px] text-[#6c7b92]">{page.articleCountLabel}</p>
-              <div className="flex items-center gap-2">
-                {[1, 2, 3, 4, 5].map((num) => (
+              <div className="-mx-1 overflow-x-auto pb-1">
+                <div className="flex w-max items-center gap-2 px-1 sm:flex-wrap sm:justify-end">
+                  {[1, 2, 3, 4, 5].map((num) => (
+                    <button
+                      key={num}
+                      type="button"
+                      className={`inline-flex h-[34px] min-w-[34px] items-center justify-center rounded-[10px] border px-2 text-[14px] sm:text-[15px] ${
+                        num === 1
+                          ? 'border-[#1663f6] bg-[#1663f6] text-white'
+                          : 'border-[#1663f6] bg-white text-[#1663f6]'
+                      }`}
+                    >
+                      {num}
+                    </button>
+                  ))}
+                  <span className="px-2 text-[#4b5e7d]">...</span>
                   <button
-                    key={num}
                     type="button"
-                    className={`inline-flex h-[34px] min-w-[34px] items-center justify-center rounded-[10px] border text-[15px] ${
-                      num === 1
-                        ? 'border-[#1663f6] bg-[#1663f6] text-white'
-                        : 'border-[#1663f6] bg-white text-[#1663f6]'
-                    }`}
+                    className="inline-flex h-[34px] min-w-[34px] items-center justify-center rounded-[10px] border border-[#1663f6] bg-white px-4 text-[14px] text-[#1663f6] sm:text-[15px]"
                   >
-                    {num}
+                    {page.nextPage}
                   </button>
-                ))}
-                <span className="px-2 text-[#4b5e7d]">...</span>
-                <button
-                  type="button"
-                  className="inline-flex h-[34px] min-w-[34px] items-center justify-center rounded-[10px] border border-[#1663f6] bg-white px-4 text-[15px] text-[#1663f6]"
-                >
-                  {page.nextPage}
-                </button>
-                <button
-                  type="button"
-                  className="inline-flex h-[34px] items-center gap-2 rounded-[10px] border border-[#1663f6] bg-white px-4 text-[15px] text-[#1663f6]"
-                >
-                  Next <MoveRight size={16} />
-                </button>
+                  <button
+                    type="button"
+                    className="inline-flex h-[34px] items-center gap-2 rounded-[10px] border border-[#1663f6] bg-white px-4 text-[14px] text-[#1663f6] sm:text-[15px]"
+                  >
+                    Next <MoveRight size={16} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
-          <aside className="space-y-4">
+          <aside className="min-w-0 space-y-4">
             <LeadForm />
             <SidebarPanel title="Latest Articles" items={commonLatestArticles} />
             <SharePanel />

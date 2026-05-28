@@ -15,7 +15,7 @@ export default function Products() {
           </button>
 
           <div className="grid w-full gap-4 md:grid-cols-4">
-            {products.map(({ title, icon: Icon }) => (
+            {products.map(({ title, icon: Icon, wikipediaUrl }) => (
               <article
                 key={title}
                 className="flex min-h-[358px] flex-col items-center justify-between rounded-[4px] border border-[#dfe7f5] bg-white px-6 py-10 text-center"
@@ -30,7 +30,9 @@ export default function Products() {
                 </div>
 
                 <a
-                  href="#"
+                  href={wikipediaUrl}
+                  target="_blank"
+                  rel="noreferrer"
                   className="mt-10 inline-flex items-center gap-2 text-[15px] font-normal text-[#2384ff]"
                 >
                   Read more <ArrowRight size={16} />

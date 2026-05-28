@@ -19,18 +19,22 @@ export const products = [
   {
     title: 'On-Demand Payout Feature of PB Partners',
     icon: MapPin,
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Instant_payment',
   },
   {
     title: 'Why Do We Need Insurance Agents in India?',
     icon: Landmark,
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Insurance_agent',
   },
   {
     title: 'PBPartners Insurance Commission Chart',
     icon: UserPlus,
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Commission_(remuneration)',
   },
   {
     title: 'How to get a PoSP Insurance Code',
     icon: CircleUserRound,
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Point_of_sale',
   },
 ];
 

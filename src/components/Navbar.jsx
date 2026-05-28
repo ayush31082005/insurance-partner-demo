@@ -33,7 +33,7 @@ const navItems = [
   { label: 'Careers', href: '/careers' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ onHomeAuthModeChange, homeAuthMode = 'login' }) {
   const [isSupportOpen, setIsSupportOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -54,6 +54,24 @@ export default function Navbar() {
 
     navigate(href);
   }
+
+  function handleAuthAction(nextMode) {
+    onHomeAuthModeChange?.(nextMode);
+    setIsMobileMenuOpen(false);
+    setOpenDropdown(null);
+    setIsSupportOpen(false);
+
+    if (location.pathname !== '/') {
+      navigate('/');
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  const isRegisterModeActive = location.pathname === '/' && homeAuthMode === 'register';
+  const actionLabel = isRegisterModeActive ? 'Login' : 'Register';
+  const nextMode = isRegisterModeActive ? 'login' : 'register';
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -83,7 +101,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-[#eef3fb] bg-white">
+    <header ref={navRef} className="fixed inset-x-0 top-0 z-50 border-b border-[#eef3fb] bg-white">
       <div className="mx-auto flex h-[80px] max-w-[1088px] items-center justify-between px-2 sm:px-3">
         <Link to="/" className="shrink-0">
           <img
@@ -93,7 +111,7 @@ export default function Navbar() {
           />
         </Link>
 
-        <nav ref={navRef} className="hidden items-center gap-7 pl-6 md:flex">
+        <nav className="hidden items-center gap-7 pl-6 md:flex">
           {navItems.map((item) => (
             item.dropdown ? (
               <div key={item.label} className="relative">
@@ -200,8 +218,12 @@ export default function Navbar() {
             ) : null}
           </div>
 
-          <button className="h-[42px] rounded-[4px] border border-[#4b80fd] px-[18px] text-[12px] font-medium uppercase tracking-[0.01em] text-[#4b80fd] transition hover:bg-[#4b80fd] hover:text-white">
-            Register
+          <button
+            type="button"
+            onClick={() => handleAuthAction(nextMode)}
+            className="h-[42px] rounded-[4px] border border-[#4b80fd] px-[18px] text-[12px] font-medium uppercase tracking-[0.01em] text-[#4b80fd] transition hover:bg-[#4b80fd] hover:text-white"
+          >
+            {actionLabel}
           </button>
         </div>
 
@@ -300,8 +322,12 @@ export default function Navbar() {
                   </a>
                 </div>
               ) : null}
-              <button className="h-[42px] rounded-[4px] border border-[#4b80fd] px-[18px] text-[12px] font-medium uppercase tracking-[0.01em] text-[#4b80fd] transition hover:bg-[#4b80fd] hover:text-white">
-                Register
+              <button
+                type="button"
+                onClick={() => handleAuthAction(nextMode)}
+                className="h-[42px] rounded-[4px] border border-[#4b80fd] px-[18px] text-[12px] font-medium uppercase tracking-[0.01em] text-[#4b80fd] transition hover:bg-[#4b80fd] hover:text-white"
+              >
+                {actionLabel}
               </button>
             </div>
           </div>

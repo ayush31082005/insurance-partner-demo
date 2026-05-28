@@ -6,10 +6,10 @@ import FaqsSection from '../components/FaqsSection.jsx';
 import HappyPartnersSection from '../components/HappyPartnersSection.jsx';
 // import ExperienceCenters from './ExperienceCenters.jsx';
 
-export default function Home() {
+export default function Home({ authMode, onAuthModeChange }) {
   return (
     <>
-      <Hero />
+      <Hero authMode={authMode} onAuthModeChange={onAuthModeChange} />
       <Products />
       <WhyUsSection />
       <JoinUsSection />
